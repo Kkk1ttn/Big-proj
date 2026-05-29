@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Date Night 💕</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+  :root {
+    --pink: #D4537E;
+    --pink-dark: #993556;
+    --pink-light: #FBEAF0;
+    --pink-border: #ED93B1;
+    --pink-text: #72243E;
+    --bg: #fff9fb;
+    --card: #ffffff;
+    --text: #1a1218;
+    --text-muted: #8a6878;
+    --border: rgba(212,83,126,0.18);
+    --border-strong: rgba(212,83,126,0.35);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+ 
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background-image: radial-gradient(circle at 20% 20%, rgba(212,83,126,0.06) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 80%, rgba(237,147,177,0.08) 0%, transparent 50%);
+  }
+ 
+  .app {
+    width: 100%;
+    max-width: 420px;
+  }
+ 
+  .page {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    animation: fadeUp 0.35s ease both;
+  }
+  .page.active { display: flex; }
+ 
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+ 
+  .step-dots {
+    display: flex;
+    gap: 7px;
+    margin-bottom: 2rem;
+    justify-content: center;
+  }
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--border-strong);
+    transition: background 0.3s, transform 0.3s;
+  }
+  .dot.active {
+    background: var(--pink);
+    transform: scale(1.3);
+  }
+ 
+  .top-icon {
+    font-size: 52px;
+    margin-bottom: 1rem;
+    line-height: 1;
+    filter: drop-shadow(0 2px 8px rgba(212,83,126,0.2));
+  }
+ 
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    line-height: 1.25;
+  }
+ 
+  .sub {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    line-height: 1.65;
+  }
+ 
+  /* ---- Buttons ---- */
+  .btn-yes {
+    padding: 12px 36px;
+    border-radius: 50px;
+    background: var(--pink);
+    border: none;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 16px rgba(212,83,126,0.3);
+  }
+  .btn-yes:hover { background: var(--pink-dark); transform: scale(1.04); box-shadow: 0 6px 20px rgba(212,83,126,0.4); }
+  .btn-yes:active { transform: scale(0.97); }
+ 
+  .btn-no {
+    padding: 12px 36px;
+    border-radius: 50px;
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    color: var(--text-muted);
+    font-size: 15px;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    position: relative;
+    transition: left 0.15s, top 0.15s;
+  }
+ 
+  .btn-row { display: flex; gap: 12px; align-items: center; justify-content: center; }
+ 
+  .btn-primary {
+    width: 100%; padding: 13px;
+    background: var(--pink);
+    border: none; border-radius: 50px;
+    color: #fff; font-size: 15px; font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer; margin-top: 0.5rem;
+    box-shadow: 0 4px 14px rgba(212,83,126,0.3);
+    transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+  }
+  .btn-primary:hover { background: var(--pink-dark); box-shadow: 0 6px 18px rgba(212,83,126,0.4); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary:disabled { background: #e8dde4; color: #b8a0ac; cursor: not-allowed; box-shadow: none; }
+ 
+  .btn-ghost {
+    margin-top: 1rem; padding: 9px 22px;
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    border-radius: 50px;
+    color: var(--text-muted); font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .btn-ghost:hover { background: var(--pink-light); }
+ 
+  /* ---- Form ---- */
+  .form-section { width: 100%; text-align: left; }
+  .form-section h1, .form-section .sub { text-align: center; }
+ 
+  .field { margin-bottom: 1.1rem; }
+  .field label {
+    display: block; font-size: 13px;
+    color: var(--text-muted); margin-bottom: 6px; font-weight: 500;
+  }
+  .field input[type="date"],
+  .field input[type="time"] {
+    width: 100%; padding: 11px 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    color: var(--text);
+    font-size: 15px; font-family: 'DM Sans', sans-serif;
+    outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .field input:focus {
+    border-color: var(--pink);
+    box-shadow: 0 0 0 3px rgba(212,83,126,0.12);
+  }
+ 
+  /* ---- Food grid ---- */
+  .food-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px; width: 100%;
+  }
+  .food-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 0.4rem 0.8rem;
+    cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    transition: border-color 0.15s, background 0.15s, transform 0.12s, box-shadow 0.15s;
+    user-select: none;
+  }
+  .food-card:hover { border-color: var(--pink-border); background: var(--pink-light); transform: translateY(-3px); box-shadow: 0 6px 16px rgba(212,83,126,0.12); }
+  .food-card.selected { border-color: var(--pink); background: var(--pink-light); transform: translateY(-3px); box-shadow: 0 6px 16px rgba(212,83,126,0.15); }
+  .food-card .f-emoji { font-size: 34px; line-height: 1; }
+  .food-card .f-name { font-size: 12px; font-weight: 500; color: var(--text); }
+  .food-card .f-desc { font-size: 11px; color: var(--text-muted); text-align: center; }
+  .chk { width: 18px; height: 18px; border-radius: 50%; background: var(--pink); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.15s; }
+  .food-card.selected .chk { opacity: 1; }
+  .chk svg { width: 10px; height: 10px; stroke: #fff; stroke-width: 2.5; fill: none; }
+ 
+  /* ---- Bill ---- */
+  .bill-wrap { width: 100%; }
+  .bill {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem 1.5rem 1.25rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .bill::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--pink-border), var(--pink), var(--pink-border));
+  }
+  .bill-logo { font-size: 36px; margin-bottom: 0.4rem; }
+  .bill-title { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--text); margin-bottom: 2px; }
+  .bill-sub { font-size: 11px; color: var(--text-muted); margin-bottom: 1.2rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .bill-divider { border: none; border-top: 1px dashed var(--border-strong); margin: 1rem 0; }
+  .bill-row { display: flex; justify-content: space-between; font-size: 13px; padding: 3px 0; }
+  .bill-row .lbl { color: var(--text-muted); }
+  .bill-row .val { color: var(--text); font-weight: 500; }
+  .bill-food-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; text-align: left; }
+  .bill-food-emoji { font-size: 32px; }
+  .bill-food-name { font-size: 15px; font-weight: 500; color: var(--text); }
+  .bill-food-tagline { font-size: 12px; color: var(--text-muted); }
+  .bill-footer { font-size: 11px; color: var(--pink); margin-top: 0.75rem; letter-spacing: 0.06em; }
+ 
+  .screenshot-note {
+    margin-top: 1rem; padding: 0.75rem 1rem;
+    background: var(--pink-light);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--pink-border);
+  }
+  .screenshot-note p { font-size: 13px; color: var(--pink-text); line-height: 1.55; }
+ 
+  .surprise-tap {
+    margin-top: 0.9rem; cursor: pointer;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    border: 1px dashed var(--pink-border);
+    background: transparent;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: background 0.15s;
+    width: 100%;
+    animation: pulse 2s ease infinite;
+  }
+  .surprise-tap:hover { background: var(--pink-light); animation: none; }
+  .surprise-tap span { font-size: 13px; color: var(--pink-dark); font-weight: 500; font-family: 'DM Sans', sans-serif; }
+  .surprise-tap .hint { color: var(--pink-border); font-weight: 400; }
+ 
+  @keyframes pulse {
+    0%, 100% { border-color: var(--pink-border); }
+    50% { border-color: var(--pink); }
+  }
+ 
+  /* ---- Surprise / Flower ---- */
+  .surprise-box { width: 100%; }
+ 
+  .envelope-wrap {
+    cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+    margin-bottom: 1.5rem; padding: 2rem 1.5rem;
+    border: 1px dashed var(--pink-border);
+    border-radius: var(--radius);
+    background: var(--pink-light);
+    transition: background 0.15s, transform 0.15s;
+    user-select: none;
+  }
+  .envelope-wrap:hover { background: #f4c0d180; transform: scale(1.01); }
+  .envelope-icon { font-size: 60px; transition: transform 0.3s; line-height: 1; }
+  .envelope-wrap:hover .envelope-icon { transform: scale(1.1) rotate(-6deg); }
+  .envelope-label { font-family: 'DM Serif Display', serif; font-size: 17px; color: var(--pink-dark); }
+  .envelope-hint { font-size: 12px; color: var(--pink-border); }
+ 
+  .flower-question { display: none; }
+  .flower-question.visible { display: block; }
+ 
+  .section-label { font-size: 13px; color: var(--text-muted); margin-bottom: 0.6rem; font-weight: 500; text-align: left; }
+ 
+  .flower-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 10px; margin-bottom: 0.75rem;
+  }
+  .flower-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 0.9rem 0.4rem 0.7rem;
+    cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px;
+    transition: border-color 0.15s, background 0.15s, transform 0.12s, box-shadow 0.15s;
+    user-select: none;
+  }
+  .flower-card:hover { border-color: var(--pink-border); background: var(--pink-light); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(212,83,126,0.1); }
+  .flower-card.selected { border-color: var(--pink); background: var(--pink-light); transform: translateY(-2px); }
+  .flower-card .fl-emoji { font-size: 30px; }
+  .flower-card .fl-name { font-size: 12px; font-weight: 500; color: var(--text); }
+  .fl-chk { width: 16px; height: 16px; border-radius: 50%; background: var(--pink); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.15s; }
+  .flower-card.selected .fl-chk { opacity: 1; }
+  .fl-chk svg { width: 9px; height: 9px; stroke: #fff; stroke-width: 2.5; fill: none; }
+ 
+  .other-flower-card {
+    background: var(--card); border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-sm); padding: 0.8rem 1rem;
+    cursor: pointer; display: flex; align-items: center; gap: 10px;
+    transition: border-color 0.15s, background 0.15s;
+    margin-bottom: 0.75rem;
+  }
+  .other-flower-card:hover { border-color: var(--pink-border); background: var(--pink-light); }
+  .other-flower-card.selected { border-color: var(--pink); background: var(--pink-light); }
+  .other-flower-card .ot-emoji { font-size: 22px; }
+  .other-flower-card .ot-label { font-size: 13px; color: var(--text-muted); }
+ 
+  .other-input-wrap { display: none; margin-bottom: 1rem; }
+  .other-input-wrap.show { display: block; }
+  .other-input {
+    width: 100%; padding: 11px 14px;
+    border: 1px solid var(--pink-border);
+    border-radius: var(--radius-sm);
+    background: var(--card); color: var(--text);
+    font-size: 14px; font-family: 'DM Sans', sans-serif;
+    outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .other-input:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba(212,83,126,0.12); }
+  .other-input::placeholder { color: #c4a8b4; }
+  .other-input-btn {
+    width: 100%; margin-top: 8px; padding: 10px;
+    background: var(--pink); border: none; border-radius: 50px;
+    color: #fff; font-size: 14px; font-weight: 500;
+    font-family: 'DM Sans', sans-serif; cursor: pointer;
+    transition: background 0.15s;
+  }
+  .other-input-btn:hover { background: var(--pink-dark); }
+  .other-input-btn:disabled { background: #e8dde4; color: #b8a0ac; cursor: not-allowed; }
+ 
+  .color-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 1.25rem; }
+  .color-swatch {
+    width: 38px; height: 38px; border-radius: 50%;
+    cursor: pointer; border: 2.5px solid transparent;
+    transition: transform 0.12s, border-color 0.15s, box-shadow 0.15s;
+  }
+  .color-swatch:hover { transform: scale(1.18); box-shadow: 0 3px 10px rgba(0,0,0,0.12); }
+  .color-swatch.selected { border-color: var(--pink); transform: scale(1.18); box-shadow: 0 3px 12px rgba(212,83,126,0.3); }
+ 
+  /* ---- Final card ---- */
+  .final-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .final-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--pink-border), var(--pink), var(--pink-border));
+  }
+  .final-big { font-size: 48px; margin-bottom: 0.5rem; }
+  .final-answer { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--pink); margin: 0.5rem 0; }
+  .final-msg { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+ 
+  .screenshot-note-flower {
+    margin-top: 1rem; padding: 0.75rem 1rem;
+    background: var(--pink-light); border-radius: var(--radius-sm);
+    border: 1px solid var(--pink-border);
+  }
+  .screenshot-note-flower p { font-size: 13px; color: var(--pink-text); line-height: 1.55; }
+ 
+  @media (max-width: 400px) {
+    h1 { font-size: 22px; }
+    .food-card .f-emoji, .flower-card .fl-emoji { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+ 
+  <!-- Page 1: Will you date me? -->
+  <div id="p1" class="page active">
+    <div class="step-dots">
+      <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+    <div class="top-icon">🌸</div>
+    <h1>Will you go on a date with me?</h1>
+    <p class="sub">I promise it'll be worth it 💕</p>
+    <div class="btn-row">
+      <button class="btn-yes" onclick="goTo(2)">Yes! 💕</button>
+      <button class="btn-no" id="noBtn" onmouseover="runAway(event)" ontouchstart="runAway(event)">No</button>
+    </div>
+  </div>
+ 
+  <!-- Page 2: Date & Time -->
+  <div id="p2" class="page">
+    <div class="step-dots">
+      <div class="dot"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+    <div class="form-section">
+      <div class="top-icon" style="text-align:center;width:100%">📅</div>
+      <h1>Pick a date & time</h1>
+      <p class="sub">When works best for you?</p>
+      <div class="field">
+        <label>📆 Date</label>
+        <input type="date" id="dateInput" oninput="checkForm()" />
+      </div>
+      <div class="field">
+        <label>🕐 Time</label>
+        <input type="time" id="timeInput" oninput="checkForm()" />
+      </div>
+      <button class="btn-primary" id="submitBtn" disabled onclick="goTo(3)">Next — pick our food 🍽️</button>
+    </div>
+  </div>
+ 
+  <!-- Page 3: Food pick -->
+  <div id="p3" class="page">
+    <div class="step-dots">
+      <div class="dot"></div><div class="dot"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+    <div class="top-icon">🍽️</div>
+    <h1>What are we eating?</h1>
+    <p class="sub">Pick your favorite for the night</p>
+    <div class="food-grid" id="foodGrid"></div>
+  </div>
+ 
+  <!-- Page 4: Bill -->
+  <div id="p4" class="page">
+    <div class="step-dots">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot active"></div><div class="dot"></div>
+    </div>
+    <div class="bill-wrap">
+      <div class="bill">
+        <div class="bill-logo" id="billEmoji"></div>
+        <div class="bill-title">Date Night</div>
+        <div class="bill-sub">Table for Two · Est. with Love</div>
+        <hr class="bill-divider">
+        <div class="bill-food-row">
+          <div class="bill-food-emoji" id="bFoodEmoji"></div>
+          <div>
+            <div class="bill-food-name" id="bFoodName"></div>
+            <div class="bill-food-tagline" id="bFoodTag"></div>
+          </div>
+        </div>
+        <hr class="bill-divider">
+        <div class="bill-row"><span class="lbl">Guests</span><span class="val">2 people 💑</span></div>
+        <div class="bill-row"><span class="lbl">Vibe</span><span class="val" id="bVibe"></span></div>
+        <div class="bill-row"><span class="lbl">Date</span><span class="val" id="bDate"></span></div>
+        <div class="bill-row"><span class="lbl">Time</span><span class="val" id="bTime"></span></div>
+        <hr class="bill-divider">
+        <div class="bill-footer">✨ made with love · enjoy every bite ✨</div>
+      </div>
+      <div class="screenshot-note">
+        <p>📸 hey babe, screenshot this bill and send it to me so I know it's real 💕</p>
+      </div>
+      <button class="surprise-tap" onclick="goTo(5)">
+        <span>🎁</span><span>psst… there's a little surprise for you</span><span class="hint">tap me ✨</span>
+      </button>
+      <button class="btn-ghost" onclick="goTo(3)">← change food pick</button>
+    </div>
+  </div>
+ 
+  <!-- Page 5: Surprise flower question -->
+  <div id="p5" class="page">
+    <div class="step-dots">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot active"></div>
+    </div>
+    <div class="surprise-box">
+      <div class="envelope-wrap" id="envelopeBtn" onclick="openEnvelope()">
+        <div class="envelope-icon" id="envIcon">💌</div>
+        <div class="envelope-label">you've got a secret message</div>
+        <div class="envelope-hint">tap to open 🌸</div>
+      </div>
+ 
+      <div class="flower-question" id="flowerQ">
+        <h1 style="margin-bottom:0.3rem">one little question 🌷</h1>
+        <p class="sub" style="margin-bottom:1.5rem">i wanna make tonight extra special for you…</p>
+ 
+        <p class="section-label">what's your favorite type of flower?</p>
+        <div class="flower-grid" id="flowerGrid"></div>
+ 
+        <div id="otherWrap">
+          <div class="other-flower-card" id="otherCard" onclick="toggleOther()">
+            <div class="ot-emoji">✏️</div>
+            <div class="ot-label">something else? type it here 🌼</div>
+          </div>
+        </div>
+ 
+        <div class="other-input-wrap" id="otherInputWrap">
+          <input class="other-input" id="otherInput" type="text" placeholder="e.g. Peony, Dahlia, Lavender…" oninput="checkOther()" />
+          <button class="other-input-btn" id="otherInputBtn" disabled onclick="confirmOther()">that's my flower 💐</button>
+        </div>
+ 
+        <div id="colorSection" style="display:none;margin-top:0.5rem">
+          <p class="section-label">and your favorite color? 🎨</p>
+          <div class="color-grid" id="colorGrid"></div>
+        </div>
+ 
+        <div id="flowerDoneWrap" style="display:none">
+          <div class="final-card">
+            <div class="final-big" id="finalEmoji"></div>
+            <div class="final-answer" id="finalAnswer"></div>
+            <div class="final-msg">i'll make sure to get you those 🥹<br>see you soon my love 💕</div>
+          </div>
+          <div class="screenshot-note-flower">
+            <p>📸 screenshot this too and send it to me so I know exactly what to get you 🌸</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+</div>
+ 
+<script>
+const foods = [
+  {emoji:'🍣',name:'Sushi',tagline:'Fresh & fancy rolls',vibe:'Sophisticated & fun'},
+  {emoji:'🍕',name:'Pizza',tagline:'Cozy slice night',vibe:'Relaxed & cheesy'},
+  {emoji:'🍝',name:'Pasta',tagline:'Classic Italian love',vibe:'Romantic & warm'},
+  {emoji:'🌮',name:'Tacos',tagline:'Flavour explosion',vibe:'Playful & bold'},
+  {emoji:'🍔',name:'Burger',tagline:'No-fuss & delicious',vibe:'Chill & yummy'},
+  {emoji:'🍩',name:'Dessert',tagline:'Sweet ending first',vibe:'Sweet & indulgent'},
+];
+const flowers = [
+  {emoji:'🌹',name:'Rose'},
+  {emoji:'🌷',name:'Tulip'},
+  {emoji:'🌻',name:'Sunflower'},
+  {emoji:'💐',name:'Bouquet'},
+  {emoji:'🌸',name:'Blossom'},
+  {emoji:'🪷',name:'Lotus'},
+];
+const colors = [
+  {hex:'#F4C0D1',name:'Pink'},
+  {hex:'#F0997B',name:'Coral'},
+  {hex:'#FAC775',name:'Yellow'},
+  {hex:'#9FE1CB',name:'Mint'},
+  {hex:'#B5D4F4',name:'Blue'},
+  {hex:'#CECBF6',name:'Lavender'},
+  {hex:'#C0DD97',name:'Green'},
+  {hex:'#ffffff',name:'White'},
+  {hex:'#D3D1C7',name:'Cream'},
+];
+let state = {date:'',time:'',food:null,flower:null,color:null};
+ 
+const checkSVG = `<svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>`;
+ 
+function goTo(n) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const page = document.getElementById('p'+n);
+  page.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if (n === 2) {
+    document.getElementById('dateInput').setAttribute('min', new Date().toISOString().split('T')[0]);
+  }
+}
+ 
+function checkForm() {
+  state.date = document.getElementById('dateInput').value;
+  state.time = document.getElementById('timeInput').value;
+  document.getElementById('submitBtn').disabled = !(state.date && state.time);
+}
+ 
+function buildFoodGrid() {
+  const g = document.getElementById('foodGrid');
+  if (g.children.length) return;
+  foods.forEach(f => {
+    const c = document.createElement('div');
+    c.className = 'food-card';
+    c.innerHTML = `<div class="f-emoji">${f.emoji}</div><div class="f-name">${f.name}</div><div class="f-desc">${f.tagline}</div><div class="chk">${checkSVG}</div>`;
+    c.addEventListener('click', () => {
+      document.querySelectorAll('.food-card').forEach(x => x.classList.remove('selected'));
+      c.classList.add('selected');
+      state.food = f;
+      setTimeout(() => showBill(), 300);
+    });
+    g.appendChild(c);
+  });
+}
+ 
+function showBill() {
+  const f = state.food;
+  document.getElementById('billEmoji').textContent = f.emoji;
+  document.getElementById('bFoodEmoji').textContent = f.emoji;
+  document.getElementById('bFoodName').textContent = f.name;
+  document.getElementById('bFoodTag').textContent = f.tagline;
+  document.getElementById('bVibe').textContent = f.vibe;
+  const dateObj = new Date(state.date + 'T00:00:00');
+  document.getElementById('bDate').textContent = dateObj.toLocaleDateString('en-US', {weekday:'short',month:'long',day:'numeric',year:'numeric'});
+  const [h, m] = state.time.split(':');
+  const hr = parseInt(h), ampm = hr >= 12 ? 'PM' : 'AM', hr12 = hr % 12 || 12;
+  document.getElementById('bTime').textContent = `${hr12}:${m} ${ampm}`;
+  goTo(4);
+}
+ 
+function openEnvelope() {
+  const btn = document.getElementById('envelopeBtn');
+  const icon = document.getElementById('envIcon');
+  icon.style.transform = 'scale(1.25) rotate(12deg)';
+  icon.textContent = '💝';
+  setTimeout(() => {
+    btn.style.display = 'none';
+    const fq = document.getElementById('flowerQ');
+    fq.classList.add('visible');
+    buildFlowerGrid();
+  }, 420);
+}
+ 
+function buildFlowerGrid() {
+  const g = document.getElementById('flowerGrid');
+  if (g.children.length) return;
+  flowers.forEach(f => {
+    const c = document.createElement('div');
+    c.className = 'flower-card';
+    c.innerHTML = `<div class="fl-emoji">${f.emoji}</div><div class="fl-name">${f.name}</div><div class="fl-chk">${checkSVG}</div>`;
+    c.addEventListener('click', () => {
+      document.querySelectorAll('.flower-card').forEach(x => x.classList.remove('selected'));
+      document.getElementById('otherCard').classList.remove('selected');
+      document.getElementById('otherInputWrap').classList.remove('show');
+      c.classList.add('selected');
+      state.flower = f;
+      document.getElementById('colorSection').style.display = 'block';
+      buildColorGrid();
+    });
+    g.appendChild(c);
+  });
+}
+ 
+function toggleOther() {
+  document.querySelectorAll('.flower-card').forEach(x => x.classList.remove('selected'));
+  document.getElementById('otherCard').classList.add('selected');
+  document.getElementById('otherInputWrap').classList.add('show');
+  document.getElementById('colorSection').style.display = 'none';
+  document.getElementById('flowerDoneWrap').style.display = 'none';
+  state.flower = null;
+  setTimeout(() => document.getElementById('otherInput').focus(), 100);
+}
+ 
+function checkOther() {
+  document.getElementById('otherInputBtn').disabled = document.getElementById('otherInput').value.trim().length === 0;
+}
+ 
+function confirmOther() {
+  const val = document.getElementById('otherInput').value.trim();
+  if (!val) return;
+  state.flower = {emoji:'🌼', name:val};
+  document.getElementById('colorSection').style.display = 'block';
+  buildColorGrid();
+}
+ 
+function buildColorGrid() {
+  const g = document.getElementById('colorGrid');
+  if (g.children.length) return;
+  colors.forEach(cl => {
+    const s = document.createElement('div');
+    s.className = 'color-swatch';
+    s.style.background = cl.hex;
+    s.style.border = cl.hex === '#ffffff' ? '2px solid #D3D1C7' : '2.5px solid transparent';
+    s.title = cl.name;
+    s.addEventListener('click', () => {
+      document.querySelectorAll('.color-swatch').forEach(x => x.classList.remove('selected'));
+      s.classList.add('selected');
+      state.color = cl;
+      showFinalFlower();
+    });
+    g.appendChild(s);
+  });
+}
+ 
+function showFinalFlower() {
+  document.getElementById('flowerDoneWrap').style.display = 'block';
+  document.getElementById('finalEmoji').textContent = state.flower.emoji;
+  document.getElementById('finalAnswer').textContent = `${state.color.name} ${state.flower.name} — noted! 🥰`;
+  setTimeout(() => document.getElementById('flowerDoneWrap').scrollIntoView({behavior:'smooth',block:'nearest'}), 100);
+}
+ 
+function runAway(e) {
+  const btn = document.getElementById('noBtn');
+  const rx = (Math.random() - 0.5) * 130, ry = (Math.random() - 0.5) * 70;
+  const cl = parseInt(btn.style.left) || 0, ct = parseInt(btn.style.top) || 0;
+  btn.style.position = 'relative';
+  btn.style.left = Math.max(-90, Math.min(90, cl + rx)) + 'px';
+  btn.style.top = Math.max(-45, Math.min(45, ct + ry)) + 'px';
+}
+ 
+buildFoodGrid();
+</script>
+</body>
+</html>
